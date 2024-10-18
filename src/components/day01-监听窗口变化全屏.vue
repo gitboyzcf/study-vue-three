@@ -18,7 +18,7 @@ let axesHelper = null;
 let controls = null;
 const init = () => {
   camera = new THREE.PerspectiveCamera(
-    45,
+    60,
     window.innerWidth / window.innerHeight,
     0.1,
     1000
@@ -34,40 +34,58 @@ const init = () => {
     canvas: document.getElementById("canvasDom"),
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   const geometry = new THREE.BoxGeometry(1, 1, 1);
   const material = new THREE.MeshBasicMaterial({ color: "#037ac4" });
   cube = new THREE.Mesh(geometry, material);
+  //例如设置x轴放大3倍、y轴方向放大2倍、z轴方向不变
+  cube.scale.set(3, 2, 1);
+  // cube.scale.x = 3;
+
+  // cube.rotation.x = -Math.PI / 2;
+  cube.rotation.set(-Math.PI / 4, 0, 0, "XZY");
+
   scene.add(cube);
   camera.position.z = 5;
   camera.position.y = 2;
   camera.position.x = 2;
-  // 设置相机位置
   camera.lookAt(0, 0, 0);
-  // 将辅助器添加到场景中
   scene.add(axesHelper);
-
-  // 创建轨道控制器
   controls = new OrbitControls(camera, renderer.domElement);
-  // 设置带阻尼，这将创建一种更自然的拖动体验
   controls.enableDamping = true;
-  // 设置阻尼速度
   controls.dampingFactor = 0.05;
-  // 设置自动旋转
-  // controls.autoRotate = true;
 };
 
-// 解决不同帧率下的不同渲染
-const clock = new THREE.Clock();
-
 function animate() {
-  const elapsedTime = clock.getElapsedTime();
-
   controls.update();
   requestAnimationFrame(animate);
-  cube.rotation.x = elapsedTime;
-  cube.rotation.y = elapsedTime;
+  // cube.rotation.x += 0.01;
+  // cube.rotation.y += 0.01;
   renderer.render(scene, camera);
 }
+
+// 监听窗口变化
+window.addEventListener("resize", () => {
+  // 重置渲染器宽高比
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  // 更新相机投影矩阵
+  camera.aspect = window.innerWidth / window.innerHeight;
+  // 更新投影矩阵
+  camera.updateProjectionMatrix();
+});
+
+// 全屏功能
+window.addEventListener("dblclick", () => {
+  // 全屏
+  const fullScreenElement = document.fullscreenElement;
+  if (!fullScreenElement) {
+    // 进入全屏
+    renderer.domElement.requestFullscreen();
+  } else {
+    // 退出全屏
+    document.exitFullscreen();
+  }
+});
 
 onMounted(() => {
   init();

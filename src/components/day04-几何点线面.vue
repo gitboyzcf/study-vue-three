@@ -13,7 +13,6 @@ const scene = new THREE.Scene();
 
 let camera = null;
 let renderer = null;
-let cube = null;
 let axesHelper = null;
 let controls = null;
 const init = () => {
@@ -30,33 +29,53 @@ const init = () => {
    */
   axesHelper = new THREE.AxesHelper(5);
 
-  renderer = new THREE.WebGLRenderer({
-    canvas: document.getElementById("canvasDom"),
+  // const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
+
+  // 创建点
+  const positionArray = new Float32Array([
+    0, 0, 0, // 第一个点
+    1, 0, 0, // 第二个点
+    0, 1, 0, // 第三个点
+  ]);
+  const positionAttribute = new THREE.BufferAttribute(positionArray, 3);
+  // 创建缓冲几何
+  const geometry = new THREE.BufferGeometry();
+  // 放入点数据
+  geometry.setAttribute("position", positionAttribute);
+
+
+  // 例子
+  // const geometry = new THREE.BufferGeometry();
+  // const count = 500;
+  // const positionArray = new Float32Array(count * 3 * 3);
+  // for (let i = 0; i < count * 3 * 3; i++) {
+  //   // 随机数
+  //   positionArray[i] = (Math.random() - 0.5) * 4;
+  // }
+  // const positionAttribute = new THREE.BufferAttribute(positionArray, 3);
+  // geometry.setAttribute("position", positionAttribute);
+
+  const material = new THREE.MeshBasicMaterial({
+    color: "#037ac4",
+    wireframe: true,
   });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshBasicMaterial({ color: "#037ac4" });
-  cube = new THREE.Mesh(geometry, material);
+  const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
   camera.position.z = 5;
   camera.position.y = 2;
   camera.position.x = 2;
-  // 设置相机位置
   camera.lookAt(0, 0, 0);
-  // 将辅助器添加到场景中
   scene.add(axesHelper);
 
-  // 创建轨道控制器
+  renderer = new THREE.WebGLRenderer({
+    canvas: document.getElementById("canvasDom"),
+  });
+  renderer.setSize(window.innerWidth, window.innerHeight);
   controls = new OrbitControls(camera, renderer.domElement);
-  // 设置带阻尼，这将创建一种更自然的拖动体验
   controls.enableDamping = true;
-  // 设置阻尼速度
-  controls.dampingFactor = 0.05;
-  // 设置自动旋转
-  // controls.autoRotate = true;
 };
 
-// 解决不同帧率下的不同渲染
+// 解决不同帧率下的不同渲染问题
 const clock = new THREE.Clock();
 
 function animate() {
@@ -64,8 +83,8 @@ function animate() {
 
   controls.update();
   requestAnimationFrame(animate);
-  cube.rotation.x = elapsedTime;
-  cube.rotation.y = elapsedTime;
+  // cube.rotation.x = elapsedTime;
+  // cube.rotation.y = elapsedTime;
   renderer.render(scene, camera);
 }
 

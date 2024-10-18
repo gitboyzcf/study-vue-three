@@ -3,10 +3,13 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
 import * as THREE from "three";
 // 导入控制器  https://threejs.org/docs/index.html#examples/zh/controls/OrbitControls
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { onMounted } from "vue";
+
+// 导入gsap动画库 https://gsap.com/
+import gsap from "gsap";
 
 // 创建场景
 const scene = new THREE.Scene();
@@ -16,43 +19,62 @@ let renderer = null;
 let cube = null;
 let axesHelper = null;
 let controls = null;
+let loader = null;
 const init = () => {
   camera = new THREE.PerspectiveCamera(
-    60,
+    50,
     window.innerWidth / window.innerHeight,
     0.1,
     1000
   );
-
-  // 创建坐标辅助器
-  /**
-   * 红色代表 X 轴. 绿色代表 Y 轴. 蓝色代表 Z 轴.
-   */
   axesHelper = new THREE.AxesHelper(5);
-
   renderer = new THREE.WebGLRenderer({
     canvas: document.getElementById("canvasDom"),
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshBasicMaterial({ color: "#037ac4" });
-  cube = new THREE.Mesh(geometry, material);
-  //例如设置x轴放大3倍、y轴方向放大2倍、z轴方向不变
-  cube.scale.set(3, 2, 1);
-  // cube.scale.x = 3;
 
-  // cube.rotation.x = -Math.PI / 2;
-  cube.rotation.set(-Math.PI / 4, 0, 0, "XZY");
-
-  scene.add(cube);
-  camera.position.z = 5;
+  camera.position.z = 10;
   camera.position.y = 2;
-  camera.position.x = 2;
+  // camera.position.x = 2;
   camera.lookAt(0, 0, 0);
   scene.add(axesHelper);
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
+
+  // 创建三个球
+  const color = [0xfff000, 0x00ff00, 0x0000ff];
+  const spheres = [];
+  for (let i = 0; i < 3; i++) {
+    const geometry = new THREE.SphereGeometry(1, 32, 32);
+    const material = new THREE.MeshBasicMaterial({ color: color[i] });
+    const sphere = new THREE.Mesh(geometry, material);
+    sphere.position.x = i * 3 - 3;
+    sphere.position.y = 2;
+    spheres.push(sphere);
+    scene.add(sphere);
+  }
+
+  function animate(target, d = 1) {
+    // 单位为秒
+    gsap.to(target, {
+      y: -2,
+      // 延迟时间
+      delay: d,
+      // 持续时间
+      duration: 1,
+      // 运动曲线https://gsap.com/docs/v3/Eases/
+      ease: "power1.inOut",
+      // 设置循环次数默认为0  -1为无限循环
+      repeat: -1,
+      // 设置循环往复
+      yoyo: true,
+    });
+  }
+
+  animate(spheres[0].position, 0.1);
+  animate(spheres[1].position, 0.5);
+  animate(spheres[2].position, 1);
 };
 
 function animate() {
@@ -63,13 +85,9 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-// 监听窗口变化
 window.addEventListener("resize", () => {
-  // 重置渲染器宽高比
   renderer.setSize(window.innerWidth, window.innerHeight);
-  // 更新相机投影矩阵
   camera.aspect = window.innerWidth / window.innerHeight;
-  // 更新投影矩阵
   camera.updateProjectionMatrix();
 });
 

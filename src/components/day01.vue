@@ -13,7 +13,7 @@ let camera = null;
 let renderer = null;
 let cube = null;
 const init = () => {
-  // 创建相机
+  // 创建透视相机
   /**
    * PerspectiveCamera(fov, aspect, near, far)
    * fov: 视野角度
