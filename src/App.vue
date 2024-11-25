@@ -15,7 +15,10 @@
 // import Day05 from "./components/day05-边缘和线框几何体.vue";
 // import Day05 from "./components/day05-灯光与阴影.vue";
 // import Day05 from "./components/day05-聚光灯.vue";
-import Day06 from "./components/day06-debugUI.vue";
+// import Day06 from "./components/day06-debugUI.vue";
+// import Day06 from "./components/day06-纹理重学.vue";
+// import Day06 from "./components/day06-材质Material.vue";
+import Day07 from "./components/day07-3dText.vue";
 </script>
 
 <template>
@@ -25,7 +28,8 @@ import Day06 from "./components/day06-debugUI.vue";
     <!-- <Day03 /> -->
     <!-- <Day04 /> -->
     <!-- <Day05 /> -->
-    <Day06 />
+    <!-- <Day06 /> -->
+    <Day07 />
   </main>
 </template>
 
