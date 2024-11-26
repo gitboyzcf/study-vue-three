@@ -36,7 +36,6 @@ const matcapTexture = textureLoader.load("./textures/matcaps/3.png");
  */
 const fontLoader = new FontLoader();
 fontLoader.load("/fonts/gentilis_regular.typeface.json", (font) => {
-  console.log(font);
   // 创建文字几何
   const textGeometry = new TextGeometry("Hello Three.js!", {
     font, // 字体对象
