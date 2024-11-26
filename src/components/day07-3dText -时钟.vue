@@ -3,7 +3,8 @@
 </template>
 <script setup>
 import * as THREE from "three";
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, ref, onUnmounted, reactive } from "vue";
+import dayjs from "dayjs";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import gsap from "gsap";
 // 引入lil-gui库https://lil-gui.georgealways.com/
@@ -31,6 +32,8 @@ const debugObject = {
 const textureLoader = new THREE.TextureLoader();
 const matcapTexture = textureLoader.load("./textures/matcaps/3.png");
 
+const date = ref(dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"));
+let timer = null;
 /**
  * Fonts
  */
@@ -38,17 +41,22 @@ const fontLoader = new FontLoader();
 fontLoader.load("/fonts/gentilis_regular.typeface.json", (font) => {
   console.log(font);
   // 创建文字几何
-  const textGeometry = new TextGeometry("Hello Three.js!", {
-    font, // 字体对象
-    size: 0.5, // 文字大小
-    height: 0.2, // 文字厚度
-    curveSegments: 5, // 曲线分段数
-    bevelEnabled: true, // 是否开启斜角
-    bevelThickness: 0.03, // 斜角厚度
-    bevelSize: 0.02, // 斜角大小
-    bevelOffset: 0, //斜角偏移量
-    bevelSegments: 4, // 斜角分段数
-  });
+  const textGeometry = reactive(
+    new TextGeometry(date.value, {
+      font, // 字体对象
+      size: 0.5, // 文字大小
+      height: 0.2, // 文字厚度
+      curveSegments: 5, // 曲线分段数
+      bevelEnabled: true, // 是否开启斜角
+      bevelThickness: 0.03, // 斜角厚度
+      bevelSize: 0.02, // 斜角大小
+      bevelOffset: 0, //斜角偏移量
+      bevelSegments: 4, // 斜角分段数
+    })
+  );
+  timer = setInterval(() => {
+    date.value = dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss");
+  }, 1000);
 
   // 使用边界进行居中
   // textGeometry.computeBoundingBox();
@@ -71,7 +79,7 @@ fontLoader.load("/fonts/gentilis_regular.typeface.json", (font) => {
 
   const dountGeometry = new THREE.TorusGeometry(0.3, 0.2, 20, 45);
   // 创建100个甜甜圈🍩
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 300; i++) {
     const dountMesh = new THREE.Mesh(dountGeometry, material);
     dountMesh.position.x = (Math.random() - 0.5) * 10;
     dountMesh.position.y = (Math.random() - 0.5) * 10;
@@ -135,16 +143,14 @@ const init = () => {
 onMounted(() => {
   init();
 });
-
 onUnmounted(() => {
+  clearInterval(timer);
   window.removeEventListener("resize", resize);
-})
+});
 </script>
 <style scoped lang="scss">
 #canvasId {
-  // position: absolute;
-  // top: 0;
-  // left: 0;
+  // position: fixed;
   width: 100%;
   height: 100%;
 }

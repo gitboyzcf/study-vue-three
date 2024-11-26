@@ -6,7 +6,7 @@
 import * as THREE from "three";
 // 导入控制器  https://threejs.org/docs/index.html#examples/zh/controls/OrbitControls
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 
 // 创建场景
 const scene = new THREE.Scene();
@@ -64,15 +64,18 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-// 监听窗口变化
-window.addEventListener("resize", () => {
+const resize = () => {
+  const containerBoxW =
+    document.querySelector(".container-box").offsetWidth || window.innerWidth;
   // 重置渲染器宽高比
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(containerBoxW, window.innerHeight);
   // 更新相机投影矩阵
-  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.aspect = containerBoxW / window.innerHeight;
   // 更新投影矩阵
   camera.updateProjectionMatrix();
-});
+};
+// 监听窗口变化
+window.addEventListener("resize", resize);
 
 // 全屏功能
 window.addEventListener("dblclick", () => {
@@ -89,15 +92,17 @@ window.addEventListener("dblclick", () => {
 
 onMounted(() => {
   init();
+  resize();
   animate();
+});
+onUnmounted(() => {
+  window.removeEventListener("resize", resize);
 });
 </script>
 
 <style lang="scss" scoped>
 #canvasDom {
-  position: fixed;
-  top: 0;
-  left: 0;
+  // position: fixed;
   width: 100;
   height: 100%;
 }

@@ -6,7 +6,7 @@
 import * as THREE from "three";
 // 导入控制器  https://threejs.org/docs/index.html#examples/zh/controls/OrbitControls
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 
 // 目标:阴影的属性
 // 灯光阴影
@@ -82,7 +82,7 @@ const init = () => {
   // 设置阴影贴图分辨率
   directionalLight.shadow.mapSize.set(4096, 4096);
 
-  // 设置平行光相机投射的属性 
+  // 设置平行光相机投射的属性
   // https://threejs.org/docs/index.html?q=ca#api/zh/cameras/OrthographicCamera.near
   directionalLight.shadow.camera.near = 0.5;
   directionalLight.shadow.camera.far = 500;
@@ -100,23 +100,28 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-window.addEventListener("resize", () => {
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  camera.aspect = window.innerWidth / window.innerHeight;
+const resize = () => {
+  const containerBoxW =
+    document.querySelector(".container-box").offsetWidth || window.innerWidth;
+  renderer.setSize(containerBoxW, window.innerHeight);
+  camera.aspect = containerBoxW / window.innerHeight;
   camera.updateProjectionMatrix();
-});
+};
 
 onMounted(() => {
   init();
+  resize();
   animate();
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", resize);
 });
 </script>
 
 <style lang="scss" scoped>
 #canvasDom {
-  position: fixed;
-  top: 0;
-  left: 0;
+  // position: fixed;
   width: 100;
   height: 100%;
 }

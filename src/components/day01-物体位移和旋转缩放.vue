@@ -67,6 +67,8 @@ function animate() {
 }
 
 onMounted(() => {
+  window.innerWidth =
+    document.querySelector(".container-box").offsetWidth || window.innerWidth;
   init();
   animate();
 });
@@ -74,9 +76,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 #canvasDom {
-  position: fixed;
-  top: 0;
-  left: 0;
+  // position: fixed;
   width: 100;
   height: 100%;
 }

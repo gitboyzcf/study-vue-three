@@ -3,7 +3,7 @@
 </template>
 <script setup>
 import * as THREE from "three";
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import gsap from "gsap";
 // 引入lil-gui库https://lil-gui.georgealways.com/
@@ -90,6 +90,7 @@ geoFolder
     );
   });
 
+let resize = null;
 const init = () => {
   const canvas = document.getElementById("canvasId");
   const renderer = new THREE.WebGLRenderer({
@@ -100,15 +101,19 @@ const init = () => {
 
   const controls = new OrbitControls(camera, canvas);
 
-  // 监听窗口变化
-  window.addEventListener("resize", () => {
+  resize = () => {
+    const containerBoxW =
+      document.querySelector(".container-box").offsetWidth || window.innerWidth;
     // 重置渲染器宽高比
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(containerBoxW, window.innerHeight);
     // 更新相机投影矩阵
-    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = containerBoxW / window.innerHeight;
     // 更新投影矩阵
     camera.updateProjectionMatrix();
-  });
+  };
+  resize();
+  // 监听窗口变化
+  window.addEventListener("resize", resize);
 
   function animate() {
     controls.update();
@@ -123,12 +128,13 @@ const init = () => {
 onMounted(() => {
   init();
 });
+onUnmounted(() => {
+  window.removeEventListener("resize", resize);
+});
 </script>
 <style scoped lang="scss">
 #canvasId {
-  position: fixed;
-  top: 0;
-  left: 0;
+  // position: fixed;
   width: 100%;
   height: 100%;
 }

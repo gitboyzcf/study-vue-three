@@ -3,7 +3,7 @@
 </template>
 <script setup>
 import * as THREE from "three";
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 const scene = new THREE.Scene();
@@ -83,6 +83,7 @@ camera.position.z = 5;
 camera.position.y = 1;
 camera.lookAt(0, 0, 0);
 
+let resize = null;
 const init = () => {
   const canvas = document.getElementById("canvasId");
   const renderer = new THREE.WebGLRenderer({
@@ -92,12 +93,14 @@ const init = () => {
   renderer.render(scene, camera);
 
   const controls = new OrbitControls(camera, canvas);
-
-  window.addEventListener("resize", () => {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.aspect = window.innerWidth / window.innerHeight;
+  resize = () => {
+    const containerBoxW =
+      document.querySelector(".container-box").offsetWidth || window.innerWidth;
+    renderer.setSize(containerBoxW, window.innerHeight);
+    camera.aspect = containerBoxW / window.innerHeight;
     camera.updateProjectionMatrix();
-  });
+  };
+  resize();
 
   function animate() {
     controls.update();
@@ -112,12 +115,13 @@ const init = () => {
 onMounted(() => {
   init();
 });
+onUnmounted(() => {
+  window.removeEventListener("resize", resize);
+});
 </script>
 <style scoped lang="scss">
 #canvasId {
-  position: fixed;
-  top: 0;
-  left: 0;
+  // position: fixed;
   width: 100%;
   height: 100%;
 }

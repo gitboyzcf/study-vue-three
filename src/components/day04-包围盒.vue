@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import * as THREE from "three";
 // 导入控制器  https://threejs.org/docs/index.html#examples/zh/controls/OrbitControls
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -84,23 +84,28 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-window.addEventListener("resize", () => {
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  camera.aspect = window.innerWidth / window.innerHeight;
+const resize = () => {
+  const containerBoxW =
+    document.querySelector(".container-box").offsetWidth || window.innerWidth;
+  renderer.setSize(containerBoxW, window.innerHeight);
+  camera.aspect = containerBoxW / window.innerHeight;
   camera.updateProjectionMatrix();
-});
+};
 
 onMounted(() => {
   init();
+  resize();
   animate();
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", resize);
 });
 </script>
 
 <style lang="scss" scoped>
 #canvasDom {
-  position: fixed;
-  top: 0;
-  left: 0;
+  // position: fixed;
   width: 100;
   height: 100%;
 }

@@ -6,7 +6,7 @@
 import * as THREE from "three";
 // 导入控制器  https://threejs.org/docs/index.html#examples/zh/controls/OrbitControls
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 
 // 创建场景
 const scene = new THREE.Scene();
@@ -33,16 +33,21 @@ const init = () => {
 
   // 创建点
   const positionArray = new Float32Array([
-    0, 0, 0, // 第一个点
-    1, 0, 0, // 第二个点
-    0, 1, 0, // 第三个点
+    0,
+    0,
+    0, // 第一个点
+    1,
+    0,
+    0, // 第二个点
+    0,
+    1,
+    0, // 第三个点
   ]);
   const positionAttribute = new THREE.BufferAttribute(positionArray, 3);
   // 创建缓冲几何
   const geometry = new THREE.BufferGeometry();
   // 放入点数据
   geometry.setAttribute("position", positionAttribute);
-
 
   // 例子
   // const geometry = new THREE.BufferGeometry();
@@ -87,18 +92,28 @@ function animate() {
   // cube.rotation.y = elapsedTime;
   renderer.render(scene, camera);
 }
+const resize = () => {
+  const containerBoxW =
+    document.querySelector(".container-box").offsetWidth || window.innerWidth;
+  renderer.setSize(containerBoxW, window.innerHeight);
+  camera.aspect = containerBoxW / window.innerHeight;
+  camera.updateProjectionMatrix();
+};
 
 onMounted(() => {
   init();
+  resize();
   animate();
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", resize);
 });
 </script>
 
 <style lang="scss" scoped>
 #canvasDom {
-  position: fixed;
-  top: 0;
-  left: 0;
+  // position: fixed;
   width: 100;
   height: 100%;
 }
