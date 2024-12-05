@@ -130,6 +130,7 @@ onMounted(() => {
 });
 onUnmounted(() => {
   window.removeEventListener("resize", resize);
+  gui.destroy();
 });
 </script>
 <style scoped lang="scss">

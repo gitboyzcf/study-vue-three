@@ -141,6 +141,30 @@ const tabBar = [
       import("./components/day07-3dText.vue")
     ),
   },
+  {
+    title: "灯光",
+    component: defineAsyncComponent(() =>
+      import("./components/day08-灯光.vue")
+    ),
+  },
+  {
+    title: "灯光辅助器",
+    component: defineAsyncComponent(() =>
+      import("./components/day08-灯光辅助器.vue")
+    ),
+  },
+  {
+    title: "阴影",
+    component: defineAsyncComponent(() =>
+      import("./components/day08-阴影.vue")
+    ),
+  },
+  {
+    title: "阴影2-烘培阴影",
+    component: defineAsyncComponent(() =>
+      import("./components/day08-阴影2-烘培阴影.vue")
+    ),
+  },
 ];
 
 const navSelect = shallowRef(tabBar[tabBar.length - 1]);
