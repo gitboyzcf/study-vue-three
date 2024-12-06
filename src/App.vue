@@ -165,6 +165,12 @@ const tabBar = [
       import("./components/day08-阴影2-烘培阴影.vue")
     ),
   },
+  {
+    title: "案例-鬼屋",
+    component: defineAsyncComponent(() =>
+      import("./components/day09-案例-鬼屋.vue")
+    ),
+  },
 ];
 
 const navSelect = shallowRef(tabBar[tabBar.length - 1]);
