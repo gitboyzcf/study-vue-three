@@ -1,5 +1,5 @@
 <script setup>
-import { shallowRef, defineAsyncComponent } from "vue";
+import { shallowRef, defineAsyncComponent, ref } from "vue";
 // import Day01 from "./components/day01.vue";
 // import Day01 from "./components/day01-坐标辅助器和轨道控制器.vue";
 // import Day01 from "./components/day01-物体位移和旋转缩放.vue";
@@ -171,6 +171,12 @@ const tabBar = [
       import("./components/day09-案例-鬼屋.vue")
     ),
   },
+  {
+    title: "粒子",
+    component: defineAsyncComponent(() =>
+      import("./components/day10-粒子.vue")
+    ),
+  },
 ];
 
 const navSelect = shallowRef(tabBar[tabBar.length - 1]);
@@ -179,6 +185,8 @@ const toCom = (item) => {
   navSelect.value = item.id;
   comName.value = item.id.component;
 };
+
+const drawer = ref(false);
 </script>
 
 <template>
@@ -190,7 +198,12 @@ const toCom = (item) => {
   <!-- <Day06 /> -->
   <v-responsive class="border rounded">
     <v-app>
-      <v-navigation-drawer width="250">
+      <div style="position: fixed; top: 15px; left: 15px">
+        <v-btn color="primary" @click="drawer = !drawer">
+          <v-icon icon="fa fa-list"></v-icon>
+        </v-btn>
+      </div>
+      <v-navigation-drawer width="250" v-model="drawer" temporary>
         <v-list-item title="Hello three.js"></v-list-item>
         <v-divider></v-divider>
         <v-list @click:select="toCom">
