@@ -43,14 +43,17 @@ const particlesGeometry = new THREE.BufferGeometry();
 const count = 10000;
 
 const positions = new Float32Array(count * 3);
+const colors = new Float32Array(count * 3);
 for (let i = 0; i < count * 3; i++) {
   positions[i] = (Math.random() - 0.5) * 10; // 随机数
+  colors[i] = Math.random();
 }
 
 particlesGeometry.setAttribute(
   "position",
   new THREE.BufferAttribute(positions, 3)
 );
+particlesGeometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
 const particlesMaterial = new THREE.PointsMaterial({
   size: 0.2,
@@ -67,6 +70,8 @@ const particlesMaterial = new THREE.PointsMaterial({
   // 方式三
   depthWrite: false,
   blending: THREE.AdditiveBlending, // 混合模式
+
+  vertexColors: true,
 });
 
 const particles = new THREE.Points(particlesGeometry, particlesMaterial);
@@ -116,6 +121,17 @@ const init = () => {
   const clock = new THREE.Clock();
   function animate() {
     const elapsedTime = clock.getElapsedTime();
+    particles.rotation.y = -elapsedTime * 0.05;
+
+    // 实现波浪
+    // for (let i = 0; i < count; i++) {
+    //   const i3 = i * 3;
+    //   const x = particlesGeometry.attributes.position.array[i3];
+    //   particlesGeometry.attributes.position.array[i3 + 1] = Math.sin(
+    //     elapsedTime + x
+    //   );
+    // }
+    // particlesGeometry.attributes.position.needsUpdate = true;
 
     controls.update();
     requestAnimationFrame(animate);
