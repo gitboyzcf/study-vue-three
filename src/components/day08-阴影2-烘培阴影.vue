@@ -25,8 +25,8 @@ const scene = new THREE.Scene();
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
-const bakedShadowTexture = textureLoader.load("/textures/bakedShadow.jpg");
-const simpleShadowTexture = textureLoader.load("/textures/simpleShadow.jpg");
+const bakedShadowTexture = textureLoader.load("textures/bakedShadow.jpg");
+const simpleShadowTexture = textureLoader.load("textures/simpleShadow.jpg");
 
 /**
  * Lights

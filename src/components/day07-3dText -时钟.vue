@@ -30,7 +30,7 @@ const debugObject = {
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
-const matcapTexture = textureLoader.load("./textures/matcaps/3.png");
+const matcapTexture = textureLoader.load("textures/matcaps/3.png");
 
 const date = ref(dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"));
 let timer = null;
@@ -38,7 +38,7 @@ let timer = null;
  * Fonts
  */
 const fontLoader = new FontLoader();
-fontLoader.load("/fonts/gentilis_regular.typeface.json", (font) => {
+fontLoader.load("fonts/gentilis_regular.typeface.json", (font) => {
   console.log(font);
   // 创建文字几何
   const textGeometry = reactive(

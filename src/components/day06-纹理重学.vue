@@ -18,7 +18,7 @@ const info = {
  */
 // const image = new Image();
 // const texture = new THREE.Texture(image);
-// image.src = "/textures/door/color.jpg";
+// image.src = "textures/door/color.jpg";
 // image.onload = () => {
 //   // 图片加载完成时更新
 //   texture.needsUpdate = true;
@@ -27,7 +27,7 @@ const info = {
 // 使用加载器加载
 // const textureLoader = new THREE.TextureLoader();
 // const texture = textureLoader.load(
-//   "/textures/door/color.jpg",
+//   "textures/door/color.jpg",
 //   () => {
 //     console.log("load");
 //   },
@@ -54,19 +54,19 @@ loadingManager.onError = () => {
   console.log("loading error");
 };
 const textureLoader = new THREE.TextureLoader(loadingManager);
-const colorTexture = textureLoader.load("/textures/minecraft.png");
-const alphaTexture = textureLoader.load("/textures/door/alpha.jpg");
-const heightTexture = textureLoader.load("/textures/door/height.jpg");
-const normalTexture = textureLoader.load("/textures/door/normal.jpg");
+const colorTexture = textureLoader.load("textures/minecraft.png");
+const alphaTexture = textureLoader.load("textures/door/alpha.jpg");
+const heightTexture = textureLoader.load("textures/door/height.jpg");
+const normalTexture = textureLoader.load("textures/door/normal.jpg");
 const ambientOcclusionTexture = textureLoader.load(
-  "/textures/door/ambientOcclusion.jpg"
+  "textures/door/ambientOcclusion.jpg"
 );
-const metalnessTexture = textureLoader.load("/textures/door/metalness.jpg");
-const roughnessTexture = textureLoader.load("/textures/door/roughness.jpg");
+const metalnessTexture = textureLoader.load("textures/door/metalness.jpg");
+const roughnessTexture = textureLoader.load("textures/door/roughness.jpg");
 
 colorTexture.colorSpace = THREE.SRGBColorSpace;
 // 当一个纹素覆盖大于一个像素时，贴图将如何采样。
-// https://threejs.org/docs/index.html?q=text#api/zh/textures/Texture.magFilter
+// https://threejs.org/docs/index.html?q=text#api/zhtextures/Texture.magFilter
 colorTexture.magFilter = THREE.NearestFilter;
 
 /**

@@ -29,13 +29,13 @@ const debugObject = {
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
-const matcapTexture = textureLoader.load("./textures/matcaps/3.png");
+const matcapTexture = textureLoader.load("textures/matcaps/3.png");
 
 /**
  * Fonts
  */
 const fontLoader = new FontLoader();
-fontLoader.load("/fonts/gentilis_regular.typeface.json", (font) => {
+fontLoader.load("fonts/gentilis_regular.typeface.json", (font) => {
   // 创建文字几何
   const textGeometry = new TextGeometry("Hello Three.js!", {
     font, // 字体对象
