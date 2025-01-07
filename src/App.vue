@@ -177,6 +177,18 @@ const tabBar = [
       import("./components/day10-粒子.vue")
     ),
   },
+  {
+    title: "案例-银河",
+    component: defineAsyncComponent(() =>
+      import("./components/day10-案例-银河.vue")
+    ),
+  },
+  {
+    title: "滚动动画",
+    component: defineAsyncComponent(() =>
+      import("./components/day11-滚动动画.vue")
+    ),
+  },
 ];
 
 const navSelect = shallowRef(tabBar[tabBar.length - 1]);
@@ -198,7 +210,7 @@ const drawer = ref(false);
   <!-- <Day06 /> -->
   <v-responsive class="border rounded">
     <v-app>
-      <div style="position: fixed; top: 15px; left: 15px">
+      <div style="position: fixed; top: 15px; left: 15px; z-index: 999">
         <v-btn color="primary" @click="drawer = !drawer">
           <v-icon icon="fa fa-list"></v-icon>
         </v-btn>
