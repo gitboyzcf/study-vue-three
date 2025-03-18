@@ -189,6 +189,12 @@ const tabBar = [
       import("./components/day11-滚动动画.vue")
     ),
   },
+  {
+    title: "物理空间",
+    component: defineAsyncComponent(() =>
+      import("./components/day12-物理空间.vue")
+    ),
+  },
 ];
 
 const navSelect = shallowRef(tabBar[tabBar.length - 1]);
